@@ -27,8 +27,9 @@ app.get("/produtos",async(req,res)=>{
             port:3306
         })
         //PASSO 3: QUERY  -> SELECT * FROM produtos
+        const [result,fields]  = await conexao.query("SELECT * FROM produtos")
         //PASSO 4: Colocar os dados do banco no response
-        res.send({mensagem:"Eu sou a rota de produtos"})
+        res.send(result)
     }catch(e){
         res.status(500).send("Erro do servidor")
     }
