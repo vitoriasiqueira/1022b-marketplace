@@ -22,7 +22,7 @@ app.get("/produtos",async(req,res)=>{
         const conexao = await mysql.createConnection({
             host: process.env.dbhost?process.env.dbhost:"mysql-marketplace-ifms-vitoria-mysql.l.aivencloud.com",
             user:process.env.dbuser?process.env.dbuser:"avnadmin",
-            password:process.env.dbpassword?process.env.dbpassword:"AVNS_31Oi6PdLJbnhox2Ir8j",
+            password:process.env.dbpassword?process.env.dbpassword:"default_password",
             database:process.env.dbname?process.env.dbname:"defaultdb",
             port:process.env.dbport?parseInt(process.env.dbport):28320
         })
@@ -45,7 +45,7 @@ app.get("/usuarios",async(req,res)=>{
         const conexao = await mysql.createConnection({
             host: process.env.dbhost?process.env.dbhost:"mysql-marketplace-ifms-vitoria-mysql.l.aivencloud.com",
             user:process.env.dbuser?process.env.dbuser:"avnadmin",
-            password:process.env.dbpassword?process.env.dbpassword:"AVNS_31Oi6PdLJbnhox2Ir8j",
+            password:process.env.dbpassword?process.env.dbpassword:"default_password",
             database:process.env.dbname?process.env.dbname:"defaultdb",
             port:process.env.dbport?parseInt(process.env.dbport):28320
         })
