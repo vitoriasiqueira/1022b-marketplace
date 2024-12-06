@@ -13,18 +13,18 @@ app.use(express.json())  //Middleware
 //incluir o CORS -> QUANDO A GENTE TEM OUTRA PORTA FAZENDO REQUISIÇÃO PARA A PORTA DO SERVIDOR
 app.use(cors())
 //ROTAS
-app.get("/produtos",async(req,res)=>{
+app.get("/produtos",async(req,res)=>{  
 
     //O que eu tenho que fazer aqui dentro?
     //OK -> PASSO 1: Criar o banco de dados
     //PASSO 2: Usar a lib mysql2 para conectar com o banco
     try{
         const conexao = await mysql.createConnection({
-            host: process.env.dbhost?process.env.dbhost:"mysql-marketplace-ifms-vitoria-mysql.l.aivencloud.com",
-            user:process.env.dbuser?process.env.dbuser:"avnadmin",
+            host: process.env.dbhost?process.env.dbhost:"localhost",
+            user:process.env.dbuser?process.env.dbuser:"root",
             password:process.env.dbpassword?process.env.dbpassword:"",
-            database:process.env.dbname?process.env.dbname:"defaultdb",
-            port:process.env.dbport?parseInt(process.env.dbport):28320
+            database:process.env.dbname?process.env.dbname:"banco1022b",
+            port:process.env.dbport?parseInt(process.env.dbport):3306
         })
         //PASSO 3: QUERY  -> SELECT * FROM produtos
         const [result,fields]  = await conexao.query("SELECT * FROM produtos")
@@ -36,6 +36,25 @@ app.get("/produtos",async(req,res)=>{
     }
 });
 
+app.post("/produtos",async(req,res)=>{  
+    try{
+        const conexao = await mysql.createConnection({
+            host: process.env.dbhost?process.env.dbhost:"localhost",
+            user:process.env.dbuser?process.env.dbuser:"root",
+            password:process.env.dbpassword?process.env.dbpassword:"",
+            database:process.env.dbname?process.env.dbname:"banco1022b",
+            port:process.env.dbport?parseInt(process.env.dbport):3306
+        })
+        const {id,nome,descricao,preco,imagem} = req.body
+        const [result,fields]  = await conexao.query("INSERT INTO produtos VALUES (?,?,?,?,?)",[id,nome,descricao,preco,imagem])
+        await conexao.end()
+        res.send(result)
+    }catch(e){
+        console.log(e)
+        res.status(500).send("Erro do servidor")
+    }
+});
+
 app.get("/usuarios",async(req,res)=>{
 
     //O que eu tenho que fazer aqui dentro?
@@ -43,11 +62,11 @@ app.get("/usuarios",async(req,res)=>{
     //PASSO 2: Usar a lib mysql2 para conectar com o banco
     try{
         const conexao = await mysql.createConnection({
-            host: process.env.dbhost?process.env.dbhost:"mysql-marketplace-ifms-vitoria-mysql.l.aivencloud.com",
-            user:process.env.dbuser?process.env.dbuser:"avnadmin",
+            host: process.env.dbhost?process.env.dbhost:"localhost",
+            user:process.env.dbuser?process.env.dbuser:"root",
             password:process.env.dbpassword?process.env.dbpassword:"",
-            database:process.env.dbname?process.env.dbname:"defaultdb",
-            port:process.env.dbport?parseInt(process.env.dbport):28320
+            database:process.env.dbname?process.env.dbname:"banco1022b",
+            port:process.env.dbport?parseInt(process.env.dbport):3306
         })
         //PASSO 3: QUERY  -> SELECT * FROM produtos
         const [result,fields]  = await conexao.query("SELECT * FROM usuarios")
@@ -55,6 +74,7 @@ app.get("/usuarios",async(req,res)=>{
         //PASSO 4: Colocar os dados do banco no response
         res.send(result)
     }catch(e){
+        console.log(e)
         res.status(500).send("Erro do servidor")
     }
 });
